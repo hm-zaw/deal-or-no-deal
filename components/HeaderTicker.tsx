@@ -23,8 +23,8 @@ const HeaderTicker = () => {
           
           {/* Mini Barcode (Scaled down) */}
           <div className="hidden md:flex h-6 gap-[2px] items-center opacity-60">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className={`h-full bg-paper-bg ${Math.random() > 0.5 ? 'w-0.5' : 'w-1'}`}></div>
+            {[0, 1, 0.5, 1, 0.5, 1, 0, 1].map((width, i) => (
+              <div key={i} className={`h-full bg-paper-bg ${width === 0.5 ? 'w-0.5' : width === 1 ? 'w-1' : 'w-0'}`}></div>
             ))}
           </div>
 

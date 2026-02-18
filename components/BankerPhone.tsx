@@ -79,7 +79,7 @@ const BankerPhone: React.FC<BankerPhoneProps> = ({ isOpen, offer, onDeal, onNoDe
 
           {/* Footer Code */}
           <div className="mt-6 flex gap-4 text-[10px] font-mono text-grid-line uppercase tracking-widest">
-            <span>Ref: B-{Math.floor(Math.random() * 9999)}</span>
+            <span>Ref: B-2468</span>
             <span>//</span>
             <span>Auth: BANKER</span>
           </div>

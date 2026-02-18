@@ -10,16 +10,6 @@ import GameRules from '@/components/GameRules';
 import HeaderTicker from '@/components/HeaderTicker';
 import TickerMarquee from '@/components/TickerMarquee'; // <--- IMPORTED HERE
 
-// Helper to shuffle array
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-};
-
 interface CaseData {
   id: number;
   value: number;
@@ -39,10 +29,20 @@ export default function Home() {
 
   // Initialize Game
   useEffect(() => {
-    initGame();
+    // Helper to shuffle array (client-side only)
+    const shuffleArray = <T,>(array: T[]): T[] => {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    };
+    
+    initGame(shuffleArray);
   }, []);
 
-  const initGame = () => {
+  const initGame = (shuffleArray: <T>(array: T[]) => T[]) => {
     const shuffledValues = shuffleArray(MONEY_VALUES);
     const initialCases = shuffledValues.map((value, index) => ({
       id: index + 1,
@@ -58,6 +58,20 @@ export default function Home() {
     setBankerOffer(0);
     setMessage("Select your case to keep.");
     setFinalResult(null);
+  };
+
+  const resetGame = () => {
+    // Helper to shuffle array (client-side only)
+    const shuffleArray = <T,>(array: T[]): T[] => {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    };
+    
+    initGame(shuffleArray);
   };
 
   const calculateOffer = (currentEliminated: number[], currentRound: number) => {
@@ -262,7 +276,7 @@ export default function Home() {
              )}
 
              <button 
-               onClick={initGame}
+               onClick={resetGame}
                className="w-full bg-ink-black text-paper-bg px-6 py-4 font-header text-2xl hover:bg-bloomberg-orange hover:text-ink-black transition-colors border-2 border-transparent hover:border-ink-black uppercase tracking-widest"
              >
                PLAY AGAIN
