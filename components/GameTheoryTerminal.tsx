@@ -188,7 +188,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="text-[10px] text-[#A8A295] uppercase tracking-widest font-bold">
                   [ WALD / MAXIMIN ]
                 </div>
-                <button onClick={() => toggleInfo('wald')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ ? ]</button>
+                <button onClick={() => toggleInfo('wald')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ DETAILS ]</button>
               </div>
               <div className="text-[#1A1A1A] font-extrabold text-2xl tracking-tight">
                 {displayedMetrics.waldValue !== undefined ? formatCurrency(displayedMetrics.waldValue) : '---'}
@@ -207,7 +207,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="text-[10px] text-[#FF5500] uppercase tracking-widest font-bold">
                   [ LAPLACE / EV ]
                 </div>
-                <button onClick={() => toggleInfo('laplace')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ ? ]</button>
+                <button onClick={() => toggleInfo('laplace')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ DETAILS ]</button>
               </div>
               <div className="text-[#FF5500] font-extrabold text-2xl tracking-tight">
                 {displayedMetrics.laplaceValue !== undefined ? formatCurrency(displayedMetrics.laplaceValue) : '---'}
@@ -226,7 +226,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="text-[10px] text-[#A8A295] uppercase tracking-widest font-bold">
                   [ MAXIMAX ]
                 </div>
-                <button onClick={() => toggleInfo('maximax')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ ? ]</button>
+                <button onClick={() => toggleInfo('maximax')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ DETAILS ]</button>
               </div>
               <div className="text-[#1A1A1A] font-extrabold text-2xl tracking-tight">
                 {displayedMetrics.maximaxValue !== undefined ? formatCurrency(displayedMetrics.maximaxValue) : '---'}
@@ -251,7 +251,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="flex justify-between items-center border-b border-dashed border-[#A8A295] pb-1">
                   <div className="flex items-center">
                     <span className="text-xs text-[#A8A295] uppercase font-bold">Exp. Utility (EU)</span>
-                    <button onClick={() => toggleInfo('eu')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors text-[10px]">[ ? ]</button>
+                    <button onClick={() => toggleInfo('eu')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors text-[10px]">[ INFO ]</button>
                   </div>
                   <span className="text-[#1A1A1A] text-lg font-bold">
                     {displayedMetrics.expectedUtility !== undefined ? formatUtility(displayedMetrics.expectedUtility) : '---'}
@@ -268,7 +268,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="flex justify-between items-center border-b border-dashed border-[#A8A295] pb-1">
                   <div className="flex items-center">
                     <span className="text-xs text-[#1A1A1A] uppercase font-bold bg-[#D4CDC0] px-1">Certainty Eq. (CE)</span>
-                    <button onClick={() => toggleInfo('ce')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors text-[10px]">[ ? ]</button>
+                    <button onClick={() => toggleInfo('ce')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors text-[10px]">[ INFO ]</button>
                   </div>
                   <span className="text-[#1A1A1A] text-xl font-extrabold">
                     {displayedMetrics.certaintyEquivalent !== undefined ? formatCurrency(displayedMetrics.certaintyEquivalent) : '---'}
@@ -331,7 +331,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="text-[10px] text-[#1A1A1A]/60 font-bold uppercase tracking-widest">
                   &gt; SAVAGE REGRET MATRIX [MINIMAX REGRET]
                 </div>
-                <button onClick={() => toggleInfo('savage')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ ? ]</button>
+                <button onClick={() => toggleInfo('savage')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ INFO ]</button>
               </div>
               {activeInfo === 'savage' && (
                 <div className="bg-[#D4CDC0] border border-dashed border-[#1A1A1A]/50 p-2 mb-4 text-[10px] md:text-xs text-[#1A1A1A] leading-relaxed font-sans">
@@ -385,7 +385,7 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
                 <div className="text-[10px] text-[#1A1A1A]/60 font-bold uppercase tracking-widest">
                   &gt; HURWICZ OPTIMISM INDEX (α) [CRITERION OF OPTIMISM]
                 </div>
-                <button onClick={() => toggleInfo('hurwicz')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ ? ]</button>
+                <button onClick={() => toggleInfo('hurwicz')} className="ml-2 text-[#FF5500] hover:text-[#1A1A1A] transition-colors">[ INFO ]</button>
               </div>
               {activeInfo === 'hurwicz' && (
                 <div className="bg-[#D4CDC0] border border-dashed border-[#1A1A1A]/50 p-2 mb-4 text-[10px] md:text-xs text-[#1A1A1A] leading-relaxed font-sans">
