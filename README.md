@@ -14,11 +14,11 @@ The system establishes fundamental decision boundaries through classical decisio
 
 **Wald Method (Maximin)**
 The pessimistic approach providing an absolute floor for decision-making:
-$$\text{Wald} = \min(\text{remaining\_cases})$$
+$$\text{Wald} = \min(\text{remaining cases})$$
 
 **Maximax Method**
 The optimistic approach establishing theoretical ceiling:
-$$\text{Maximax} = \max(\text{remaining\_cases})$$
+$$\text{Maximax} = \max(\text{remaining cases})$$
 
 **Laplace Method (Expected Value)**
 The rational approach assuming equal probability distribution:
