@@ -10,6 +10,7 @@ import GameTheoryTerminal from '@/components/GameTheoryTerminal';
 import HeaderTicker from '@/components/HeaderTicker';
 import TickerMarquee from '@/components/TickerMarquee';
 import HostDialogue from '@/components/HostDialogue';
+import StartScreen from '@/components/StartScreen';
 
 interface CaseData {
   id: number;
@@ -18,6 +19,7 @@ interface CaseData {
 }
 
 export default function Home() {
+  const [showStartScreen, setShowStartScreen] = useState(true);
   const [cases, setCases] = useState<CaseData[]>([]);
   const [myCaseId, setMyCaseId] = useState<number | null>(null);
   const [gameState, setGameState] = useState<GameState>('PICK_CASE');
@@ -244,6 +246,8 @@ const BAD_OPEN_DIALOGUES = [
 
   return (
     <main className="min-h-screen bg-paper-bg grid-bg relative overflow-hidden flex flex-col items-center pb-6">
+      {showStartScreen && <StartScreen onStart={() => setShowStartScreen(false)} />}
+      
       {/* Visual Effects */}
       <div className="crt-flicker pointer-events-none fixed inset-0 z-50 opacity-[0.02]"></div>
       
