@@ -233,20 +233,14 @@ const BAD_OPEN_DIALOGUES = [
     // myCase is NOT opened.
     
     if (remainingCases <= 2) {
-       // Game Over, Reveal My Case
-       const myCase = cases.find(c => c.id === myCaseId);
-       if (myCase) {
-         setFinalResult({ winAmount: myCase.value, source: 'CASE' });
-         setGameState('GAME_OVER');
-         setMessage(`GAME OVER! Your case contained $${myCase.value.toLocaleString()}`);
-         // Reveal my case
-         setCases(prev => prev.map(c => c.id === myCaseId ? { ...c, isOpen: true } : c));
-         // Trigger game over dialogue
-         triggerDialogue([
-           "ကစားပွဲ ပြီးဆုံးသွားပါပြီ။",
-           "သင့်ရဲ့ ကိုယ်ပိုင်သေတ္တာထဲက ငွေကတော့..."
-         ]);
-       }
+       // Transition to FINAL_CHOICE
+       setGameState('FINAL_CHOICE');
+       setMessage("FINAL DECISION: KEEP YOUR CASE OR SWAP?");
+       triggerDialogue([
+         "ကစားပွဲက နောက်ဆုံးအဆင့်ကို ရောက်လာပါပြီ။",
+         "သင့်သေတ္တာကိုပဲ ယူမလား၊ ဒါမှမဟုတ် ကျန်နေတဲ့ သေတ္တာနဲ့ လဲမလား။",
+         "သေချာ စဉ်းစားပြီး ဆုံးဖြတ်ပါ။"
+       ]);
     } else {
       // Next Round
       const nextRound = round + 1;
@@ -266,6 +260,27 @@ const BAD_OPEN_DIALOGUES = [
          // Fallback if structure ends (shouldn't happen with correct constants)
          setGameState('GAME_OVER');
       }
+    }
+  };
+
+  const handleFinalChoice = (selectedCaseId: number) => {
+    const selectedCase = cases.find(c => c.id === selectedCaseId);
+    if (selectedCase) {
+      setFinalResult({ winAmount: selectedCase.value, source: 'CASE' });
+      setGameState('GAME_OVER');
+      setMessage(`GAME OVER! You won $${selectedCase.value.toLocaleString()}`);
+      
+      // Reveal both final cases
+      setCases(prev => prev.map(c => 
+        (c.id === myCaseId || !c.isOpen) 
+          ? { ...c, isOpen: true } 
+          : c
+      ));
+      
+      triggerDialogue([
+        "ကစားပွဲ ပြီးဆုံးသွားပါပြီ။",
+        `သင်ရွေးချယ်လိုက်တာကတော့ $${selectedCase.value.toLocaleString()} ပါ!`,
+      ]);
     }
   };
 
@@ -312,36 +327,76 @@ const BAD_OPEN_DIALOGUES = [
                </div>
             </div>
 
-            {/* My Case Area */}
-            {myCaseId && (
-              <div className="mb-6 lg:mb-8 flex flex-col items-center animate-bounce-slow">
-                <span className="font-header text-ink-black text-sm mb-1 tracking-widest bg-paper-dark px-2">YOUR CASE</span>
-                <Case 
-                  id={myCaseId} 
-                  isOpen={cases.find(c => c.id === myCaseId)?.isOpen || false}
-                  value={cases.find(c => c.id === myCaseId)?.value}
-                  onClick={() => {}} // Can't click my case until end
-                  disabled={true}
-                  isMyCase={true}
-                />
+            {/* Dynamic Game Area */}
+            {gameState === 'FINAL_CHOICE' ? (
+              <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 my-8 md:my-16 w-full animate-in fade-in duration-1000">
+                <div className="flex flex-col items-center">
+                  <span className="font-header text-[#1A1A1A] text-xl mb-4 tracking-widest bg-[#D4CDC0] px-4 py-2 border-2 border-[#1A1A1A] shadow-[4px_4px_0px_rgba(26,26,26,1)]">PLAYER'S CASE</span>
+                  <Case 
+                    id={myCaseId!} 
+                    isOpen={cases.find(c => c.id === myCaseId)?.isOpen || false}
+                    value={cases.find(c => c.id === myCaseId)?.value}
+                    onClick={() => handleFinalChoice(myCaseId!)}
+                    disabled={dialogueQueue.length > 0}
+                    isMyCase={true}
+                  />
+                </div>
+                
+                <div className="text-3xl md:text-5xl font-header text-[#1A1A1A] font-extrabold animate-pulse bg-[#D4CDC0] p-4 border-2 border-[#1A1A1A] shadow-[4px_4px_0px_rgba(26,26,26,1)] rotate-[-2deg]">VS</div>
+                
+                {(() => {
+                  const remainingCase = cases.find(c => c.id !== myCaseId && !c.isOpen);
+                  if (!remainingCase) return null;
+                  return (
+                    <div className="flex flex-col items-center">
+                      <span className="font-header text-[#1A1A1A] text-xl mb-4 tracking-widest bg-bloomberg-orange px-4 py-2 border-2 border-[#1A1A1A] shadow-[4px_4px_0px_rgba(26,26,26,1)]">REMAINING CASE</span>
+                      <Case 
+                        key={remainingCase.id}
+                        id={remainingCase.id} 
+                        isOpen={remainingCase.isOpen}
+                        value={remainingCase.value}
+                        onClick={() => handleFinalChoice(remainingCase.id)}
+                        disabled={dialogueQueue.length > 0}
+                        isMyCase={false}
+                      />
+                    </div>
+                  );
+                })()}
               </div>
-            )}
+            ) : (
+              <>
+                {/* My Case Area */}
+                {myCaseId && (
+                  <div className="mb-6 lg:mb-8 flex flex-col items-center animate-bounce-slow">
+                    <span className="font-header text-ink-black text-sm mb-1 tracking-widest bg-paper-dark px-2">YOUR CASE</span>
+                    <Case 
+                      id={myCaseId} 
+                      isOpen={cases.find(c => c.id === myCaseId)?.isOpen || false}
+                      value={cases.find(c => c.id === myCaseId)?.value}
+                      onClick={() => {}} // Can't click my case until end
+                      disabled={true}
+                      isMyCase={true}
+                    />
+                  </div>
+                )}
 
-            {/* Cases Grid */}
-            {/* UPDATED: Better columns for mobile portrait and forced centering */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3 justify-center justify-items-center w-full max-w-3xl mx-auto px-2">
-              {cases.filter(c => c.id !== myCaseId).map((c) => (
-                <Case 
-                  key={c.id} 
-                  id={c.id} 
-                  isOpen={c.isOpen}
-                  value={c.value}
-                  onClick={() => handleCaseClick(c.id)}
-                  disabled={dialogueQueue.length > 0 || (gameState !== 'PICK_CASE' && gameState !== 'OPEN_CASES')}
-                  isMyCase={false}
-                />
-              ))}
-            </div>
+                {/* Cases Grid */}
+                {/* UPDATED: Better columns for mobile portrait and forced centering */}
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3 justify-center justify-items-center w-full max-w-3xl mx-auto px-2">
+                  {cases.filter(c => c.id !== myCaseId).map((c) => (
+                    <Case 
+                      key={c.id} 
+                      id={c.id} 
+                      isOpen={c.isOpen}
+                      value={c.value}
+                      onClick={() => handleCaseClick(c.id)}
+                      disabled={dialogueQueue.length > 0 || (gameState !== 'PICK_CASE' && gameState !== 'OPEN_CASES')}
+                      isMyCase={false}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
 
             {/* Mobile Board (Both Columns) - Shown AFTER Cases on Portrait */}
             <div className="w-full lg:hidden mt-8 mb-6 px-2">
@@ -369,6 +424,7 @@ const BAD_OPEN_DIALOGUES = [
           <GameTheoryTerminal 
             remainingValues={MONEY_VALUES.filter(v => !eliminatedValues.includes(v))}
             bankerOffer={gameState === 'BANKER_OFFER' ? bankerOffer : null}
+            gameState={gameState}
           />
         </div>
       )}

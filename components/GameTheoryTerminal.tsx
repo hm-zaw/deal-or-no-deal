@@ -7,6 +7,7 @@ const BASELINE_WEALTH = 50000;
 interface GameTheoryTerminalProps {
   remainingValues: number[];
   bankerOffer: number | null;
+  gameState?: string;
 }
 
 interface GameTheoryMetrics {
@@ -20,6 +21,7 @@ interface GameTheoryMetrics {
 const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
   remainingValues,
   bankerOffer,
+  gameState,
 }) => {
   const [displayedMetrics, setDisplayedMetrics] = useState<Partial<GameTheoryMetrics>>({});
   const [typedRecommendation, setTypedRecommendation] = useState('');
@@ -171,6 +173,17 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
         {/* Content */}
         <div className="p-3 md:p-6 relative z-10">
           
+          {gameState === 'FINAL_CHOICE' ? (
+            <div className="flex flex-col items-center justify-center py-12 md:py-24 animate-in fade-in duration-1000">
+              <div className="text-xl md:text-3xl lg:text-4xl text-[#1A1A1A] font-extrabold tracking-widest animate-[pulse_2s_ease-in-out_infinite] border-y-4 border-[#1A1A1A] py-4 text-center w-full bg-[#EAE5D9]">
+                SYSTEM IDLE // FINAL DECISION
+              </div>
+              <div className="text-xs md:text-sm text-[#1A1A1A] uppercase font-bold mt-6 tracking-widest bg-[#D4CDC0] px-4 py-2 border-2 border-[#1A1A1A] inline-block shadow-[2px_2px_0px_rgba(26,26,26,1)]">
+                AWAITING PLAYER INPUT...
+              </div>
+            </div>
+          ) : (
+            <>
           {/* Status Bar */}
           <div className="mb-4 md:mb-6 border-b-2 border-[#1A1A1A] pb-2 flex justify-between">
             <span className="text-[#A8A295] text-[9px] md:text-xs uppercase tracking-widest font-bold">
@@ -473,6 +486,8 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
               <span className="w-3 h-5 bg-[#1A1A1A] ml-1 animate-[ping_1s_steps(2,start)_infinite] inline-block"></span>
             </div>
           </div>
+            </>
+          )}
 
         </div>
       </div>
