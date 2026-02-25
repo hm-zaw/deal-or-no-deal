@@ -283,11 +283,6 @@ const BAD_OPEN_DIALOGUES = [
                </div>
             </div>
 
-            {/* Mobile Board (Both Columns) - Shown between Status and Cases on Portrait */}
-            <div className="w-full lg:hidden mb-6 px-2">
-                 <Board eliminatedValues={eliminatedValues} side="both" />
-            </div>
-
             {/* My Case Area */}
             {myCaseId && (
               <div className="mb-6 lg:mb-8 flex flex-col items-center animate-bounce-slow">
@@ -317,6 +312,11 @@ const BAD_OPEN_DIALOGUES = [
                   isMyCase={false}
                 />
               ))}
+            </div>
+
+            {/* Mobile Board (Both Columns) - Shown AFTER Cases on Portrait */}
+            <div className="w-full lg:hidden mt-8 mb-6 px-2">
+                 <Board eliminatedValues={eliminatedValues} side="both" />
             </div>
         </div>
 
