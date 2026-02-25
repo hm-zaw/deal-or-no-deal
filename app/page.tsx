@@ -31,6 +31,16 @@ export default function Home() {
   const [dialogueQueue, setDialogueQueue] = useState<string[]>([]);
   const [finalResult, setFinalResult] = useState<{ winAmount: number; source: 'DEAL' | 'CASE' } | null>(null);
 
+  useEffect(() => {
+    if ((gameState === 'GAME_OVER' || gameState === 'DEAL_ACCEPTED') && finalResult) {
+      try {
+        if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+          navigator.vibrate([120, 60, 120, 60, 300]);
+        }
+      } catch {}
+    }
+  }, [gameState, finalResult]);
+
   // Initialize Game
   useEffect(() => {
     // Helper to shuffle array (client-side only)

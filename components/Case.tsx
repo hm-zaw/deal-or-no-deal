@@ -12,9 +12,17 @@ interface CaseProps {
 }
 
 const Case: React.FC<CaseProps> = ({ id, isOpen, value, onClick, disabled, isMyCase }) => {
+  const handlePress = () => {
+    try {
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(40);
+      }
+    } catch {}
+    onClick();
+  };
   return (
     <button
-      onClick={onClick}
+      onClick={handlePress}
       disabled={disabled || isOpen}
       className={`
         relative 
