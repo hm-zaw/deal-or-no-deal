@@ -174,17 +174,32 @@ const BAD_OPEN_DIALOGUES = [
       setCasesToOpenInRound(remaining);
 
       if (remaining === 0) {
-        // Round Over, Banker Calls
-        const offer = calculateOffer(newEliminated, round);
-        setBankerOffer(offer);
-        setGameState('BANKER_OFFER');
-        setMessage("The Banker is calling...");
-        // Trigger banker offer dialogue
-        triggerDialogue([
-          "ခဏလေး... ဖုန်းဝင်လာတယ်။",
-          "Banker ဆီကပါ။ သူက သင့်ရဲ့ ရပ်တည်ချက်ကို စမ်းသပ်နေပြီ။",
-          "Game Theory Terminal ကို သေချာကြည့်ပြီး ဆုံးဖြတ်ပါ။"
-        ]);
+        // Check if good or bad case opened (under $10,000 = good, $100,000+ = bad)
+        if (selectedCase.value < 10000) {
+          const randomIndex = Math.floor(Math.random() * GOOD_OPEN_DIALOGUES.length);
+          triggerDialogue(GOOD_OPEN_DIALOGUES[randomIndex]);
+        } else if (selectedCase.value >= 100000) {
+          const randomIndex = Math.floor(Math.random() * BAD_OPEN_DIALOGUES.length);
+          triggerDialogue(BAD_OPEN_DIALOGUES[randomIndex]);
+        } else {
+          setMessage("The Banker is calling...");
+        }
+
+        // Round Over, wait 3 seconds before Banker Calls
+        setGameState('BANKER_CALLING');
+        
+        setTimeout(() => {
+          const offer = calculateOffer(newEliminated, round);
+          setBankerOffer(offer);
+          setGameState('BANKER_OFFER');
+          setMessage("The Banker is calling...");
+          // Trigger banker offer dialogue
+          triggerDialogue([
+            "ခဏလေး... ဖုန်းဝင်လာတယ်။",
+            "Banker ဆီကပါ။ သူက သင့်ရဲ့ ရပ်တည်ချက်ကို စမ်းသပ်နေပြီ။",
+            "Game Theory Terminal ကို သေချာကြည့်ပြီး ဆုံးဖြတ်ပါ။"
+          ]);
+        }, 3000);
       } else {
         // Check if good or bad case opened (under $10,000 = good, $100,000+ = bad)
         if (selectedCase.value < 10000) {

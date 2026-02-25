@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+const BASELINE_WEALTH = 50000;
+
 interface GameTheoryTerminalProps {
   remainingValues: number[];
   bankerOffer: number | null;
@@ -38,9 +40,9 @@ const GameTheoryTerminal: React.FC<GameTheoryTerminalProps> = ({
     const waldValue = Math.min(...remainingValues);
     const maximaxValue = Math.max(...remainingValues);
     
-    const utilities = remainingValues.map(val => Math.log(val + 1));
+    const utilities = remainingValues.map(val => Math.log(val + BASELINE_WEALTH));
     const expectedUtility = utilities.reduce((sum, u) => sum + u, 0) / n;
-    const certaintyEquivalent = Math.exp(expectedUtility) - 1;
+    const certaintyEquivalent = Math.max(0, Math.exp(expectedUtility) - BASELINE_WEALTH);
 
     return {
       laplaceValue,

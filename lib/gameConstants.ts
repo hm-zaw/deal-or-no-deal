@@ -15,7 +15,7 @@ export const ROUND_STRUCTURE = [
   { round: 9, casesToOpen: 1 },
 ];
 
-export type GameState = 'PICK_CASE' | 'OPEN_CASES' | 'BANKER_OFFER' | 'GAME_OVER' | 'DEAL_ACCEPTED' | 'NO_DEAL_END';
+export type GameState = 'PICK_CASE' | 'OPEN_CASES' | 'BANKER_CALLING' | 'BANKER_OFFER' | 'GAME_OVER' | 'DEAL_ACCEPTED' | 'NO_DEAL_END';
 
 export const RISK_FACTORS: Record<number, number> = {
   1: 0.20,

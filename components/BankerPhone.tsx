@@ -10,11 +10,10 @@ interface BankerPhoneProps {
 }
 
 const BankerPhone: React.FC<BankerPhoneProps> = ({ isOpen, offer, onDeal, onNoDeal }) => {
-  if (!isOpen) return null;
-
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useLayoutEffect(() => {
+    if (!isOpen) return;
     const el = audioRef.current;
     if (!el) return;
     el.currentTime = 0;
@@ -26,7 +25,9 @@ const BankerPhone: React.FC<BankerPhoneProps> = ({ isOpen, offer, onDeal, onNoDe
         el.currentTime = 0;
       } catch {}
     };
-  }, []);
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
